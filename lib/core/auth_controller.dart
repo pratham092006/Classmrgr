@@ -59,6 +59,28 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  // Mock login for testing (no backend required)
+  Future<bool> mockLogin() async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      await Future.delayed(const Duration(milliseconds: 800));
+      const mockToken = 'mock_token_12345';
+      final mockUser = User(
+        id: '1',
+        name: 'Test Faculty',
+        email: 'test@example.com',
+        dept: 'IT',
+        role: 'FACULTY',
+      );
+      await _storage.writeToken(mockToken);
+      state = AuthState(user: mockUser, token: mockToken, isLoading: false);
+      return true;
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: 'Mock login failed');
+      return false;
+    }
+  }
+
   Future<void> logout() async {
     await _storage.clearToken();
     state = AuthState.initial();

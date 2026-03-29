@@ -120,6 +120,32 @@ const LoginPage = () => {
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
+
+          {/* TEMP: Quick test login (remove later) */}
+          <button
+            type="button"
+            onClick={async () => {
+              setLoading(true);
+              // Mock token - replace with real token once backend is ready
+              const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWRtaW5AZGV2LmNvbSIsInJvbGUiOiJBRE1JTiIsImRlcHQiOiJJVCJ9.mock';
+              localStorage.setItem('token', mockToken);
+              window.location.href = '/dashboard';
+            }}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              marginTop: '0.5rem',
+              background: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            ⚡ Quick Test Login (Dev)
+          </button>
         </form>
       </div>
     </div>

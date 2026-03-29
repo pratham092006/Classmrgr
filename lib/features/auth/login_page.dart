@@ -202,7 +202,52 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     _error!,
                     style: const TextStyle(color: Colors.red),
                   ),
-                ]
+                ],
+                const SizedBox(height: 16),
+                // TEMP: Quick test login button (remove later)
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onPressed: _loading
+                        ? null
+                        : () async {
+                            setState(() {
+                              _loading = true;
+                              _error = null;
+                            });
+                            final success = await ref
+                                .read(authControllerProvider.notifier)
+                                .mockLogin();
+                            if (!mounted) return;
+                            setState(() => _loading = false);
+                            if (success) {
+                              context.go('/');
+                            } else {
+                              setState(() => _error = 'Mock login failed');
+                            }
+                          },
+                    child: _loading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                                color: Colors.white, strokeWidth: 2.5))
+                        : const Text(
+                            '⚡ Quick Test Login',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                  ),
+                )
               ],
             ),
           ),
